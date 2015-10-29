@@ -145,7 +145,7 @@ class ShapedRecipe implements Recipe{
 	 * @return null|Item
 	 */
 	public function getIngredient($x, $y){
-		return isset($this->ingredients[$y][$x]) ? $this->ingredients[$y][$x] : Item::get(Item::AIR);
+		return isset($this->ingredients[$x][$y]) ? $this->ingredients[$x][$y] : Item::get(Item::AIR);
 	}
 
 	/**
@@ -157,5 +157,59 @@ class ShapedRecipe implements Recipe{
 
 	public function registerToCraftingManager(){
 		Server::getInstance()->getCraftingManager()->registerShapedRecipe($this);
+	}
+
+	/**
+	 * @param Item[] $input
+	 * @param int $craftingType
+	 * @return bool
+	 */
+	public function canCraftWith($input, $craftingType){
+		$horizontalPadding = 3 - $this->getWidth();
+		$verticalPadding = 3 - $this->getHeight();
+
+		//move Pattern
+		for($x = 0; $x <= $horizontalPadding; ++$x){
+			for ($y = 0; $y <= $verticalPadding; ++$y){
+				if ($this->patternMatches($input, $craftingType, $x, $y)){
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * @param Item[] $input
+	 * @param int $craftingType
+	 * @param int $startOnX
+	 * @param int $startOnY
+	 * @return bool
+	 */
+	private function patternMatches($input, $craftingType, $startOnX, $startOnY){
+		$canCraft = true;
+
+		$inputWidth = $craftingType === 1 ? 3 : 2;
+		$inputHeight = $craftingType === 1 ? 3 : 2;
+
+		for($x = $startOnX; $x < $inputWidth and $canCraft; ++$x){
+			for($y = $startOnY; $y < $inputHeight; ++$y){
+				$item = $input[$x * $inputWidth + $y];
+				$ingredient = $this->getIngredient($x, $y);
+				if($item->getCount() > 0 and $item->getId() > 0){
+					if($ingredient === null or !$ingredient->deepEquals($item, $ingredient->getDamage() !== null, $ingredient->getCompoundTag() !== null)){
+						$canCraft = false;
+						break;
+					}
+
+				}elseif($ingredient !== null and $ingredient->getId() !== 0){
+					$canCraft = false;
+					break;
+				}
+			}
+		}
+
+		return $canCraft;
 	}
 }

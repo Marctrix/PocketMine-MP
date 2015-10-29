@@ -123,4 +123,45 @@ class ShapelessRecipe implements Recipe{
 	public function registerToCraftingManager(){
 		Server::getInstance()->getCraftingManager()->registerShapelessRecipe($this);
 	}
+
+	/**
+	 * @param Item[] $input
+	 * @param int $craftingType
+	 * @return bool
+	 */
+	public function canCraftWith($input, $craftingType){
+		$canCraft = true;
+
+		$needed = $this->getIngredientList();
+
+		$inputWidth = $craftingType === 1 ? 3 : 2;
+		$inputHeight = $craftingType === 1 ? 3 : 2;
+
+		for($x = 0; $x < $inputWidth and $canCraft; ++$x){
+			for($y = 0; $y < $inputHeight; ++$y){
+				$item = clone $input[$y * $inputWidth + $x];
+
+				foreach($needed as $k => $n){
+					if($n->deepEquals($item, $n->getDamage() !== null, $n->getCompoundTag() !== null)){
+						$remove = min($n->getCount(), $item->getCount());
+						$n->setCount($n->getCount() - $remove);
+						$item->setCount($item->getCount() - $remove);
+
+						if($n->getCount() === 0){
+							unset($needed[$k]);
+						}
+					}
+				}
+
+				if($item->getCount() > 0){
+					$canCraft = false;
+					break;
+				}
+			}
+		}
+
+		if(count($needed) > 0){
+			$canCraft = false;
+		}
+	}
 }

@@ -73,14 +73,11 @@ use pocketmine\inventory\FurnaceInventory;
 use pocketmine\inventory\Inventory;
 use pocketmine\inventory\InventoryHolder;
 use pocketmine\inventory\PlayerInventory;
-use pocketmine\inventory\ShapedRecipe;
-use pocketmine\inventory\ShapelessRecipe;
+use pocketmine\inventory\Recipe;
 use pocketmine\inventory\SimpleTransactionGroup;
-
 use pocketmine\item\Item;
 use pocketmine\level\ChunkLoader;
 use pocketmine\level\format\FullChunk;
-use pocketmine\level\format\LevelProvider;
 use pocketmine\level\Level;
 use pocketmine\level\Location;
 use pocketmine\level\Position;
@@ -99,7 +96,6 @@ use pocketmine\nbt\tag\Int;
 use pocketmine\nbt\tag\Long;
 use pocketmine\nbt\tag\Short;
 use pocketmine\nbt\tag\String;
-use pocketmine\network\Network;
 use pocketmine\network\protocol\AdventureSettingsPacket;
 use pocketmine\network\protocol\AnimatePacket;
 use pocketmine\network\protocol\BatchPacket;
@@ -114,7 +110,6 @@ use pocketmine\network\protocol\PlayerActionPacket;
 use pocketmine\network\protocol\PlayStatusPacket;
 use pocketmine\network\protocol\RespawnPacket;
 use pocketmine\network\protocol\TextPacket;
-
 use pocketmine\network\protocol\MovePlayerPacket;
 use pocketmine\network\protocol\SetDifficultyPacket;
 use pocketmine\network\protocol\SetEntityMotionPacket;
@@ -132,8 +127,6 @@ use pocketmine\tile\Sign;
 use pocketmine\tile\Spawnable;
 use pocketmine\tile\Tile;
 use pocketmine\utils\TextFormat;
-
-
 use raklib\Binary;
 
 /**
@@ -2629,61 +2622,14 @@ class Player extends Human implements CommandSender, InventoryHolder, ChunkLoade
 					}
 				}
 
-				$canCraft = true;
-
-
-				if($recipe instanceof ShapedRecipe){
-					for($x = 0; $x < 3 and $canCraft; ++$x){
-						for($y = 0; $y < 3; ++$y){
-							$item = $packet->input[$y * 3 + $x];
-							$ingredient = $recipe->getIngredient($x, $y);
-							if($item->getCount() > 0 and $item->getId() > 0){
-								if($ingredient === null or !$ingredient->deepEquals($item, $ingredient->getDamage() !== null, $ingredient->getCompoundTag() !== null)){
-									$canCraft = false;
-									break;
-								}
-
-							}elseif($ingredient !== null and $ingredient->getId() !== 0){
-								$canCraft = false;
-								break;
-							}
-						}
-					}
-				}elseif($recipe instanceof ShapelessRecipe){
-					$needed = $recipe->getIngredientList();
-
-					for($x = 0; $x < 3 and $canCraft; ++$x){
-						for($y = 0; $y < 3; ++$y){
-							$item = clone $packet->input[$y * 3 + $x];
-
-							foreach($needed as $k => $n){
-								if($n->deepEquals($item, $n->getDamage() !== null, $n->getCompoundTag() !== null)){
-									$remove = min($n->getCount(), $item->getCount());
-									$n->setCount($n->getCount() - $remove);
-									$item->setCount($item->getCount() - $remove);
-
-									if($n->getCount() === 0){
-										unset($needed[$k]);
-									}
-								}
-							}
-
-							if($item->getCount() > 0){
-								$canCraft = false;
-								break;
-							}
-						}
-					}
-
-					if(count($needed) > 0){
-						$canCraft = false;
-					}
-				}else{
-					$canCraft = false;
-				}
-
 				/** @var Item[] $ingredients */
 				$ingredients = $packet->input;
+
+				$canCraft = false;
+				if($recipe instanceof Recipe){
+					$canCraft = $recipe->CanCraftWith($ingredients, $this->craftingType);
+				}
+
 				$result = $packet->output[0];
 
 				if(!$canCraft or !$recipe->getResult()->deepEquals($result)){

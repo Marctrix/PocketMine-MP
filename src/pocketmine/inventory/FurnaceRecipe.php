@@ -80,4 +80,13 @@ class FurnaceRecipe implements Recipe{
 	public function registerToCraftingManager(){
 		Server::getInstance()->getCraftingManager()->registerFurnaceRecipe($this);
 	}
+
+	/**
+	 * @param Item[] $input
+	 * @param int $craftingType
+	 * @return bool
+	 */
+	public function CanCraftWith($input, $craftingType){
+		// TODO: Implement CanCraftWith() method.
+	}
 }

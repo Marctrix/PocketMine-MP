@@ -36,4 +36,11 @@ interface Recipe{
 	 * @return UUID
 	 */
 	public function getId();
+
+	/**
+	 * @param Item[] $input
+	 * @param int $craftingType
+	 * @return bool
+	 */
+	public function canCraftWith($input, $craftingType);
 }
