@@ -2627,7 +2627,7 @@ class Player extends Human implements CommandSender, InventoryHolder, ChunkLoade
 
 				$canCraft = false;
 				if($recipe instanceof Recipe){
-					$canCraft = $recipe->CanCraftWith($ingredients, $this->craftingType);
+					$canCraft = $recipe->canCraftWith($ingredients, $this->craftingType);
 				}
 
 				$result = $packet->output[0];
