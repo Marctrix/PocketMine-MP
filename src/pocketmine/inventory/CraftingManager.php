@@ -53,7 +53,6 @@ class CraftingManager{
 		$this->registerStonecutter();
 		$this->registerFurnace();
 
-
 		$this->registerDyes();
 		$this->registerIngots();
 		$this->registerTools();
@@ -79,8 +78,8 @@ class CraftingManager{
 		$this->registerRecipe((new ShapelessRecipe(Item::get(Item::SNOW_LAYER, 0, 6)))->addIngredient(Item::get(Item::SNOW_BLOCK, 0, 3)));
 
 		$this->registerRecipe((new ShapedRecipe(Item::get(Item::STICK, 0, 4),
-			"X ",
-			"X "
+			"X",
+			"X"
 		))->setIngredient("X", Item::get(Item::WOODEN_PLANK, null)));
 
 		$this->registerRecipe((new ShapedRecipe(Item::get(Item::STONECUTTER, 0, 1),
@@ -118,12 +117,12 @@ class CraftingManager{
 		))->setIngredient("X", Item::get(Item::STRING, 0, 4)));
 
 		$this->registerRecipe((new ShapedRecipe(Item::get(Item::TORCH, 0, 4),
-			"C ",
+			"C",
 			"S"
 		))->setIngredient("C", Item::get(Item::COAL,0,1))->setIngredient("S", Item::get(Item::STICK,0,1)));
 
 		$this->registerRecipe((new ShapedRecipe(Item::get(Item::TORCH, 0, 4),
-			"C ",
+			"C",
 			"S"
 		))->setIngredient("C", Item::get(Item::COAL, 1, 1))->setIngredient("S", Item::get(Item::STICK, 0, 1)));
 
@@ -298,7 +297,7 @@ class CraftingManager{
 
 		$this->registerRecipe((new BigShapedRecipe(Item::get(Item::BUCKET, 0, 1),
 			"I I",
-			" I"
+			" I "
 		))->setIngredient("I", Item::get(Item::IRON_INGOT, 0, 3)));
 
 		$this->registerRecipe((new BigShapedRecipe(Item::get(Item::CLOCK, 0, 1),
@@ -310,7 +309,7 @@ class CraftingManager{
 		$this->registerRecipe((new BigShapedRecipe(Item::get(Item::COMPASS, 0, 1),
 			" I ",
 			"IRI",
-			" I"
+			" I "
 		))->setIngredient("I", Item::get(Item::IRON_INGOT, 0, 4))->setIngredient("R", Item::get(Item::REDSTONE_DUST, 0, 1)));
 
 		$this->registerRecipe((new BigShapedRecipe(Item::get(Item::TNT, 0, 1),
@@ -321,7 +320,7 @@ class CraftingManager{
 
 		$this->registerRecipe((new BigShapedRecipe(Item::get(Item::BOWL, 0, 4),
 			"P P",
-			" P"
+			" P "
 		))->setIngredient("P", Item::get(Item::WOODEN_PLANKS, null, 3)));
 
 		$this->registerRecipe((new BigShapedRecipe(Item::get(Item::MINECART, 0, 1),
@@ -348,13 +347,13 @@ class CraftingManager{
 
 		$this->registerRecipe((new ShapedRecipe(Item::get(Item::PAPER, 0, 3),
 			"SS",
-			"S"
+			"S "
 		))->setIngredient("S", Item::get(Item::SUGARCANE, 0, 3)));
 
 		$this->registerRecipe((new BigShapedRecipe(Item::get(Item::SIGN, 0, 3),
 			"PPP",
 			"PPP",
-			" S"
+			" S "
 		))->setIngredient("S", Item::get(Item::STICK, 0, 1))->setIngredient("P", Item::get(Item::WOODEN_PLANKS, null, 6))); //TODO: check if it gives one sign or three
 
 		$this->registerRecipe((new BigShapedRecipe(Item::get(Item::IRON_BARS, 0, 16),
@@ -390,9 +389,7 @@ class CraftingManager{
 	protected function registerStonecutter(){	
 		$shapes = [
 			"slab" => [
-				"   ",
 				"XXX",
-				"   "
 			],
 			"stairs" => [
 				"X  ",
@@ -402,23 +399,20 @@ class CraftingManager{
 			"wall/fence" => [
 				"XXX",
 				"XXX",
-				"   "
 			],                   
 			"blockrecipe1" => [
 				"XX",
 				"XX"				
 			],
 			"blockrecipe2X1" => [
-				"   ",
-				" X ",
-				" X "
+				"X",
+				"X"
 			],
 			"blockrecipe2X2" => [
 				"AB",
 				"BA"
 			],                    
 			"blockrecipe1X2" => [
-				"  ",
 				"AB"
 			]                          
 		];              
@@ -501,6 +495,7 @@ class CraftingManager{
 	private function createOneIngedientRecipe($recipeshape, $resultitem, $resultitemmeta, $resultitemamound, $ingedienttype, $ingredientmeta, $ingredientname, $inventoryType = ""){
 		$ingredientamount = 0;
 		$height = 0;
+
 		// count how many of the ingredient are in the recipe and check height for big or small recipe.
 		foreach ($recipeshape as $line){
 			$height += 1;
@@ -621,25 +616,28 @@ class CraftingManager{
 				" I "
 			],
 			[
-				" X ",
-				" I ",
-				" I "
+				"X",
+				"I",
+				"I"
 			],
 			[
-				"XX ",
-				"XI ",
-				" I "
+				"XX",
+				"XI",
+				" I"
 			],
 			[
-				"XX ",
-				" I ",
-				" I "
+				"XX",
+				" I",
+				" I"
 			]
 		];
 
 		for($i = 1; $i < 5; ++$i){
 			foreach($types[$i] as $j => $type){
-				$this->registerRecipe((new BigShapedRecipe(Item::get($type, 0, 1), ...$shapes[$i - 1]))->setIngredient("X", Item::get($types[0][$j], null))->setIngredient("I", Item::get(Item::STICK)));
+				$this->registerRecipe((new BigShapedRecipe(Item::get($type, 0, 1),
+					...$shapes[$i - 1]
+				))->setIngredient("X", Item::get($types[0][$j], null))
+				  ->setIngredient("I", Item::get(Item::STICK)));
 			}
 		}
 
