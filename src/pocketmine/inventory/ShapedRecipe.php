@@ -128,16 +128,6 @@ class ShapedRecipe implements Recipe{
 		foreach($this->ingredients as $y => $row){
 			$ingredients[$y] = [];
 
-			/*
-			for($x = 0; $x <  $this->getWidth(); ++$x){
-				if($row[$x] !== null){
-					$ingredients[$y][$x] = clone $row[$x];
-				}else{
-					$ingredients[$y][$x] = Item::get(Item::AIR);
-				}
-			}
-			*/
-
 			foreach($row as $x => $ingredient){
 				if($ingredient !== null){
 					$ingredients[$y][$x] = clone $ingredient;
