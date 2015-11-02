@@ -544,8 +544,7 @@ class CraftingManager{
 		$shapes = [
 			[
 				"XXX",
-				"X X",
-				"   "
+				"X X"
 			],
 			[
 				"X X",
@@ -581,17 +580,17 @@ class CraftingManager{
 		for($i = 1; $i < 2; ++$i){
 			foreach($types[$i] as $j => $type){
 				$this->registerRecipe((new BigShapedRecipe(Item::get($type, 0, 1),
-					" X ",
-					" X ",
-					" I "
+					"X",
+					"X",
+					"I"
 				))->setIngredient("X", Item::get($types[0][$j], null))->setIngredient("I", Item::get(Item::STICK)));
 			}
 		}
 
 		$this->registerRecipe((new BigShapedRecipe(Item::get(Item::ARROW, 0, 1),
-			" F ",
-			" S ",
-			" P "
+			"F",
+			"S",
+			"P"
 		))->setIngredient("S", Item::get(Item::STICK))->setIngredient("F", Item::get(Item::FLINT))->setIngredient("P", Item::get(Item::FEATHER)));
 
 		$this->registerRecipe((new BigShapedRecipe(Item::get(Item::BOW, 0, 1),
