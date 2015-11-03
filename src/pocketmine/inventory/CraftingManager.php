@@ -557,7 +557,6 @@ class CraftingManager{
 				"X X"
 			],
 			[
-				"   ",
 				"X X",
 				"X X"
 			]
