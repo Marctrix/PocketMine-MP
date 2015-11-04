@@ -72,7 +72,7 @@ class CraftingManager{
 				"XX"
 				))->setIngredient("X", Item::get(Item::GLOWSTONE_DUST)));
 
-		$this->registerRecipe(new ShapedRecipe(Item::get(Item::LIT_PUMPKIN, 0, 1),
+		$this->registerRecipe((new ShapedRecipe(Item::get(Item::LIT_PUMPKIN, 0, 1),
 				"P",
 				"T"
 		))->setIngredient("P", Item::get(Item::PUMPKIN))->setIngredient("T", Item::get(Item::TORCH));
