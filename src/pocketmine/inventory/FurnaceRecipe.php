@@ -86,7 +86,7 @@ class FurnaceRecipe implements Recipe{
 	 * @param int $craftingType
 	 * @return bool
 	 */
-	public function CanCraftWith($input, $craftingType){
+	public function canCraftWith($input, $craftingType){
 		// TODO: Implement CanCraftWith() method.
 	}
 }
