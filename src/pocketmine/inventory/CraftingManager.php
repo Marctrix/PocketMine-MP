@@ -75,7 +75,7 @@ class CraftingManager{
 		$this->registerRecipe((new ShapedRecipe(Item::get(Item::LIT_PUMPKIN, 0, 1),
 				"P",
 				"T"
-		))->setIngredient("P", Item::get(Item::PUMPKIN))->setIngredient("T", Item::get(Item::TORCH));
+		))->setIngredient("P", Item::get(Item::PUMPKIN, 1, 1))->setIngredient("T", Item::get(Item::TORCH, 0, 1)));
 
 		$this->registerRecipe((new ShapedRecipe(Item::get(Item::SNOW_BLOCK, 0, 1),
 			"XX",
@@ -85,7 +85,7 @@ class CraftingManager{
 
 		$this->registerRecipe((new ShapedRecipe(Item::get(Item::SNOW_LAYER, 0, 6),
 				"XXX"
-				))->addIngredient(Item::get(Item::SNOW_BLOCK, 0, 3)));
+				))->setIngredient("X", Item::get(Item::SNOW_BLOCK, 0, 3)));
 
 		$this->registerRecipe((new ShapedRecipe(Item::get(Item::STICK, 0, 4),
 			"X",
